@@ -74,10 +74,14 @@
         methods:{
             login: function(event){
                 event.preventDefault();
-                console.log(
-                    this.email,
-                    this.pass
-                )
+
+                this.$store.dispatch('auth/LOGIN',{
+                    email: this.email,
+                    password: this.pass
+                })
+                .then(response => {
+                    this.$router.push({ name:'dashboard' })
+                })
             }
         }
     }
