@@ -3,9 +3,10 @@ import axios from "../../utils/axios";
 function initialState() {
     return {
         cards: {
-            buffer:         [],
-            working:     [],
-            done:     [],
+            buffer:     [],
+            working:    [],
+            done:       [],
+            archived:   []
         }
     };
 }
@@ -15,9 +16,10 @@ export default {
     state: initialState(),
     mutations: {
         setCards(state, payload) {
-            state.cards.buffer              = payload.buffer;
-            state.cards.working          = payload.working;
-            state.cards.done          = payload.done;
+            state.cards.buffer      = payload.buffer;
+            state.cards.working     = payload.working;
+            state.cards.done        = payload.done;
+            state.cards.archived    = payload.archived
         },
         RESET(state){
             Object.assign(state, initialState());
@@ -47,6 +49,17 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
                 axios.put(`api/card/${card.id}`,card).then((response) => {
+                    resolve(response);
+                }).catch((error) => {
+                    console.log(error)
+                    reject(error)
+                });
+            })
+        },
+        DELETE_CARD({ commit },card){
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+                axios.delete(`api/card/${card}`).then((response) => {
                     resolve(response);
                 }).catch((error) => {
                     console.log(error)

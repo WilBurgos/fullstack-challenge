@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function done(){
         return $this->hasMany('App\Models\Card', 'user_id', 'id')->where('stage','done');
     }
+
+    public function archived(){
+        return $this->hasMany('App\Models\Card', 'user_id', 'id')->onlyTrashed();
+    }
 }

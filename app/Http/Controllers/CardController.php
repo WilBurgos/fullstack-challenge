@@ -20,6 +20,7 @@ class CardController extends Controller
                 'buffer'    => Auth()->user()->buffer,
                 'working'   => Auth()->user()->working,
                 'done'      => Auth()->user()->done,
+                'archived'  => Auth()->user()->archived
             ],200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -98,13 +99,17 @@ class CardController extends Controller
     public function update(CardRequest $request, $id)
     {
         try {
-            $editCard = Card::find($id);
+            $editCard = Card::withTrashed()->find($id);
             $editCard->user_id       = Auth()->user()->id;
             $editCard->description   = $request->description;
             $editCard->stage         = $request->stage;
             $editCard->estimation_at = $request->estimation_at;
             $editCard->delivery_at   = $request->delivery_at ? $request->delivery_at : null;
-            $editCard->save();
+            if($editCard->deleted_at===null){
+                $editCard->save();
+            }else{
+                $editCard->restore();
+            }
 
             return response()->json([
                 'message' => 'Card updated successfully'

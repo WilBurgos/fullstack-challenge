@@ -17,6 +17,4 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/{any}', 'HomeController@app')->where('any', 'login|dashboard');
+Route::get('/{any}', 'HomeController@index')->where('any', 'login|dashboard|register');

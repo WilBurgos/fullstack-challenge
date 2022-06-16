@@ -62,9 +62,8 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function logout(){
-
-        // Auth()->user()->tokens->delete();
+    public function logout()
+    {
         Auth()->user()->tokens->each(function($token, $key){
                 $token->delete();
         });

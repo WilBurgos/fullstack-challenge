@@ -11,12 +11,26 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component:  require('../components/auth/LoginComponent').default
+        component:  require('../components/auth/LoginComponent').default,
+        meta:{
+            requiresVisitor:true
+        }
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component:  require('../components/auth/RegisterComponent').default,
+        meta:{
+            requiresVisitor:true
+        }
     },
     {
         path: '/dashboard',
         name: 'dashboard',
-        component:  require('../components/ExampleComponent').default
+        component:  require('../components/ExampleComponent').default,
+        meta:{
+            requiresAuth:true
+        }
     }
 ];
 

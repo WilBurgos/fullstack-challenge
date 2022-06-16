@@ -14,13 +14,13 @@
 
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" v-if="!loggedIn">
+                        <li class="nav-item menu-nav" v-if="!loggedIn">
                             <router-link class="nav-link" to="/login">login</router-link>
                         </li>
-                        <li class="nav-item" v-if="!loggedIn">
-                            <router-link class="nav-link" to="/login">register</router-link>
+                        <li class="nav-item menu-nav" v-if="!loggedIn">
+                            <router-link class="nav-link" to="/register">register</router-link>
                         </li>
-                        <li class="nav-item" v-if="loggedIn">
+                        <li class="nav-item menu-nav" v-if="loggedIn">
                             <a class="nav-link" @click="logout">logout</a>
                         </li>
                     </ul>
@@ -32,17 +32,22 @@
     </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
     created(){
         if( this.loggedIn ){
-            this.$router.push({ name:'dashboard' })
+            this.$store.dispatch('auth/GET_USER')
+            .then(response => {
+            })
+            .catch(error => {
+                this.$router.push({ name:'login' })
+            })
         }
     },
     computed:{
-        ...mapState({
-            loggedIn: (state) => state.auth.token !== null,
-        })
+        loggedIn(){
+            return this.$store.getters["auth/loggedIn"]
+        }
     },
     methods:{
         logout: function(event){
@@ -59,3 +64,8 @@ export default {
     }
 }
 </script>
+<style>
+.menu-nav{
+    cursor: pointer;
+}
+</style>

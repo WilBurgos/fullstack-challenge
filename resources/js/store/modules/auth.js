@@ -40,7 +40,28 @@ export default {
                     commit("setUser", response.data.user);
                     resolve(response);
                 }).catch((error) => {
-                    console.log(error)
+                    reject(error)
+                });
+            })
+        },
+        REGISTER({ commit, dispatch },data) {
+            return new Promise((resolve, reject) => {
+                axios.post('api/register',data).then((response) => {
+                    resolve(response);
+                }).catch((error) => {
+                    reject(error)
+                });
+            })
+        },
+        GET_USER({ commit,state }) {
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
+                axios.get('api/user').then((response) => {
+                    commit("setUser", response.data);
+                    resolve(response);
+                }).catch((error) => {
+                    localStorage.removeItem('token')
+                    commit("setToken", null);
                     reject(error)
                 });
             })
@@ -53,7 +74,8 @@ export default {
                     commit("destroyToken");
                     resolve(response);
                 }).catch((error) => {
-                    console.log(error)
+                    localStorage.removeItem('token')
+                    commit("destroyToken");
                     reject(error)
                 });
             })
