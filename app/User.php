@@ -37,4 +37,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function buffer(){
+        return $this->hasMany('App\Models\Card', 'user_id', 'id')->where('stage','buffer');
+    }
+
+    public function working(){
+        return $this->hasMany('App\Models\Card', 'user_id', 'id')->where('stage','working');
+    }
+
+    public function done(){
+        return $this->hasMany('App\Models\Card', 'user_id', 'id')->where('stage','done');
+    }
 }
